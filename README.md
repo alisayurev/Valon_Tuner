@@ -22,7 +22,7 @@ sudo udevadm control --reload-rules
 sudo udevadm trigger
 ```
 
-If this doesn't work, check if the simlink was created
+If this doesn't work, check if the symblink was created
 ```bash
 ls -l /dev/valon5015
 ```
