@@ -1,4 +1,4 @@
-# Valon_Tuner
+# Valon Tuner
 Python CLI to control the Valon Tuner from the terminal.
 
 ## Dependencies
@@ -9,24 +9,37 @@ pip3 install pyserial
 ```
 2. Create a udev rule for persistant naming
 Create the rule file:
-`sudo nano /etc/udev/rules.d/99-valon.rules`
+```bash
+sudo nano /etc/udev/rules.d/99-valon.rules
+```
 Add the following line:
-`SUBSYSTEM=="tty, ATTRS{idProduct}=="6001", ATTRS{idVendor}=="0403", SYMBLINK+="valon5015"`
+```bash
+SUBSYSTEM=="tty, ATTRS{idProduct}=="6001", ATTRS{idVendor}=="0403", SYMBLINK+="valon5015"
+```
 Reload and apply udev rules:
-`sudo udevadm control --reload-rules`
-`sudo udevadm trigger`
+```bash
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+```
 
-If this doesn't work, check if the simlink was created:
-`ls -l /dev/valon5015`
+If this doesn't work, check if the simlink was created
+```bash
+ls -l /dev/valon5015
+```
 You may have to find the attributes manually, and copy them into the rule file:
-``udevadm info --name=/dev/ttyUSB0 --attribute-walk`
-
+```bash
+udevadm info --name=/dev/ttyUSB0 --attribute-walk`
+```
 
 ## Usage
 Make the script executable:
-`chmod +x tuner_valon.py`
+```bash
+chmod +x tuner_valon.py
+```
 Now you can run it with:
-`./tuner_valon.py -f <FREQ> -p <PWR>`
+```bash
+./tuner_valon.py -f <FREQ> -p <PWR>`
+```
 Frequency is a required parameter, while power is optional. The default gain/attentuation 
 is 0.
 
