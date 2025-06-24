@@ -76,7 +76,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--freq", "-f", type=float, required=True, help= "freq in megahertz")
-    parser.add_argument("--power", "-p", type=int, required=False, help="i dont know the power reference yet")
+    parser.add_argument("--power", "-p", type=int, required=False, help="power in dB")
     args = parser.parse_args()
 
     valon = ValonSynth()
