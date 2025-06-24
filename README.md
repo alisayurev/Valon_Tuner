@@ -2,7 +2,7 @@
 Python CLI to control the Valon Tuner from the terminal.
 
 ## Dependencies
-Ensure you have Python3 and pip3 installed. Then:
+Ensure you have Python3 and pip3 installed. Download the script in the repo. Then:
 ### 1. Install Pyserial
 ```bash
 pip3 install pyserial
