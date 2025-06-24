@@ -14,7 +14,7 @@ sudo nano /etc/udev/rules.d/99-valon.rules
 ```
 Add the following line:
 ```bash
-SUBSYSTEM=="tty, ATTRS{idProduct}=="6001", ATTRS{idVendor}=="0403", SYMBLINK+="valon5015"
+SUBSYSTEM=="tty, ATTRS{idProduct}=="6001", ATTRS{idVendor}=="0403", SYMLINK+="valon5015"
 ```
 Reload and apply udev rules:
 ```bash
@@ -22,7 +22,7 @@ sudo udevadm control --reload-rules
 sudo udevadm trigger
 ```
 
-If this doesn't work, check if the symblink was created
+If this doesn't work, check if the symlink was created
 ```bash
 ls -l /dev/valon5015
 ```
