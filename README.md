@@ -47,4 +47,4 @@ is 0.
 - To persist synthesizer configuration across reboots, send the "SAV" command. This will store the current state in non-volatile memory.
 - You can expand this tool to support sweep mode, reference source control, locking, and output enable (OEN) as needed.
 - See the [Valon 5015/5019 documentation](https://www.valonrf.com/5015-customer-downloads.html) for valid ranges and additional commands.
-- This script works only for Linux or Unix-based machines.
+- This script requires Linux for the persistent device naming via udev. The core script could work on Windows and MacOS but will need editing for opening the serial port.
