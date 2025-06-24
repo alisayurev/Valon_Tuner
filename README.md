@@ -3,11 +3,11 @@ Python CLI to control the Valon Tuner from the terminal.
 
 ## Dependencies
 Ensure you have Python3 and pip3 installed. Then:
-1. Install Pyserial
+# 1. Install Pyserial
 ```bash
 pip3 install pyserial
 ```
-2. Create a udev rule for persistant naming
+# 2. Create a udev rule for persistant naming
 Create the rule file:
 ```bash
 sudo nano /etc/udev/rules.d/99-valon.rules
