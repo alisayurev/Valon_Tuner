@@ -8,7 +8,7 @@ Ensure you have Python3 and pip3 installed. Download the script in the repo. The
 pip3 install pyserial
 ```
 ### 2. Create a udev rule for persistant naming
-Create the rule file:
+Create a rule file:
 ```bash
 sudo nano /etc/udev/rules.d/99-valon.rules
 ```
@@ -36,7 +36,7 @@ Make the script executable:
 ```bash
 chmod +x tuner_valon.py
 ```
-Now you can run it with:
+Now, once navigated to the location of the script on your system, you can run it with:
 ```bash
 ./tuner_valon.py -f <FREQ> -p <PWR>`
 ```
