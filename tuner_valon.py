@@ -4,42 +4,41 @@
 
 Valon 5015/5019 RF Synthesizer CLI Tool
 
-Command-line interface for Valon RF synthesizer
+Command-line interface for Valon RF synthesizer on Nvidia Jetson Linux systems.
+This tool configures the synthesizer via USB serial connection.
+
+Alisa Yurevich 06/2025 
 
 """
-
-import sys
 import argparse
 import serial  
-import serial.tools.list_ports as list_ports
-import os
 import time
 
-#consider dtr -> i think its just a hard reset for the tuner
-#can also change baudrate if somrthing goes wrong
-#write may always require a carriage return i am unsure
-
-#remove this once the udev rules work :3
-def list_available_ports():
- 
-    ports = list_ports.comports()
-    for port in ports:
-        print(port)
-
 class ValonSynth():
+    """
+    Class for communicating with a Valon 5015 RF Synthesizer
+    over a serial connection.
+    """
 
-    def __init__(self, port = "/dev/ttyUSB0", baudrate = 9600):
-
+    def __init__(self, port = "/dev/valon5015", baudrate = 9600): # baud rate can be made higher accordingly
+        """
+        Initialize the serial connection to the Valon device.
+        Assumes a persistent udev symlink has been created (e.g., /dev/valon5015).
+        """
         self.port = port
         self.ser = serial.Serial(port, baudrate=baudrate, timeout=1)
-        if not self.ser.is_open:
-            self.ser.open()
-            print(f"connected to Valon on {port} at {baudrate} baud.")
 
-        self.ser.reset_input_buffer()
+        if not self.ser.is_open: 
+            self.ser.open()
+
+        # one way to clear -> can also turn dtr on and off
+        self.ser.reset_input_buffer() 
 
     def send(self, command):
-
+        """
+        Send a command string to the Valon over serial.
+        Appends carriage return. Returns any response.
+        """
         self.ser.write((command + "\r").encode())
         time.sleep(0.1)
         response = b""
@@ -49,42 +48,44 @@ class ValonSynth():
 
         return response.decode(errors='ignore')
 
-    #ask if mhz or ghz -> doesnt relaly matter just user need sto know
-    def set_freq(self, freq_ghz):
-
-        freq_mhz = int(freq_ghz * 1000)
+    def set_freq(self, freq_mhz):
+        """
+        Set the output frequency of the synthesizer.
+        """
         cmd = f"F{freq_mhz}MHz"
         print(f"Sending frequency command: {cmd}")
         return self.send(cmd)
     
     def set_power(self, mod_dB):
+        """
+        Set output power level. Valid Range -50 - 20. Can be brought lower 
+        configuring extra settings in the Valon.
+        """
         cmd = f"PWR {mod_dB}"
         print(f"Sending power command: {cmd}")
         return self.send(cmd)
 
     def close(self):
+        """
+        Close serial connection.
+        """
         self.ser.reset_input_buffer()
         self.ser.close()
 
 if __name__ == "__main__":
 
-    list_available_ports()
     parser = argparse.ArgumentParser()
-    parser.add_argument("--freq", "-f", type=float, required=True, help= "freq in gigahertz")
+    parser.add_argument("--freq", "-f", type=float, required=True, help= "freq in megahertz")
     parser.add_argument("--power", "-p", type=int, required=False, help="i dont know the power reference yet")
     args = parser.parse_args()
 
     valon = ValonSynth()
     result_freq = valon.set_freq(args.freq)
     print(result_freq)
-    if args.power:
+    if args.power is not None:
         result_power = valon.set_power(args.power)
         print(result_power)
     valon.close()
 
-
- 
-# if i want the synthesizer to start up at a certain config -> send the SAV command. (saves settings to flash)
-# ask about default settings 
 
  

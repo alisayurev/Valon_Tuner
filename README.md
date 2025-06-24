@@ -1,2 +1,37 @@
 # Valon_Tuner
-Python CLI to control the Valon Tuner through the terminal. 
+Python CLI to control the Valon Tuner from the terminal.
+
+## Dependencies
+Ensure you have Python3 and pip3 installed. Then:
+1. Install Pyserial
+```bash
+pip3 install pyserial
+```
+2. Create a udev rule for persistant naming
+Create the rule file:
+`sudo nano /etc/udev/rules.d/99-valon.rules`
+Add the following line:
+`SUBSYSTEM=="tty, ATTRS{idProduct}=="6001", ATTRS{idVendor}=="0403", SYMBLINK+="valon5015"`
+Reload and apply udev rules:
+`sudo udevadm control --reload-rules`
+`sudo udevadm trigger`
+
+If this doesn't work, check if the simlink was created:
+`ls -l /dev/valon5015`
+You may have to find the attributes manually, and copy them into the rule file:
+``udevadm info --name=/dev/ttyUSB0 --attribute-walk`
+
+
+## Usage
+Make the script executable:
+`chmod +x tuner_valon.py`
+Now you can run it with:
+`./tuner_valon.py -f <FREQ> -p <PWR>`
+Frequency is a required parameter, while power is optional. The default gain/attentuation 
+is 0.
+
+## Notes:
+- To persist synthesizer configuration across reboots, send the "SAV" command. This will store the current state in non-volatile memory.
+- You can expand this tool to support sweep mode, reference source control, locking, and output enable (OEN) as needed.
+- See the [Valon 5015/5019 documentation](https://www.valonrf.com/5015-customer-downloads.html) for valid ranges and additional commands.
+- This script works only for Linux or Unix-based machines.
