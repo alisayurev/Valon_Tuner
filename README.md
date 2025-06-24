@@ -14,7 +14,7 @@ sudo nano /etc/udev/rules.d/99-valon.rules
 ```
 Add the following line:
 ```bash
-SUBSYSTEM=="tty, ATTRS{idProduct}=="6001", ATTRS{idVendor}=="0403", SYMLINK+="valon5015"
+SUBSYSTEM=="tty", ATTRS{idProduct}=="6001", ATTRS{idVendor}=="0403", SYMLINK+="valon5015"
 ```
 Reload and apply udev rules:
 ```bash
