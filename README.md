@@ -1,5 +1,5 @@
 # Valon Tuner
-Python CLI to control the Valon Tuner from the terminal.
+This repo contains a systemd managed telemetry service and CLI interface for the Valon 5015 RF Synthesizer.
 
 ## Dependencies
 Ensure you have Python3 and pip3 installed. Download the script in the repo. Then:
