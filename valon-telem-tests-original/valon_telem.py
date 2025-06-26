@@ -103,8 +103,6 @@ class Valon_Sock:
             # i dont think im creatinf this object correctly yet. well becayse the cli has a port alr. specifiied but lowk it may be ok
             self.valon = ValonSynthTelemetry(port=self.valon_port)
 
-            threads =[]
-
             #each socket will be seperate 
             self.telem_server_socket = self.setup_socket(socket_path=self.telem_socket_path,backlog=10,description="Telemetry")
             self.cli_server_socket = self.setup_socket(socket_path=self.cli_socket_path,backlog=2,description="CLI")
