@@ -38,7 +38,7 @@ chmod +x tuner_valon.py
 ```
 Now, once navigated to the location of the script on your system, you can run it with:
 ```bash
-./tuner_valon.py -f <FREQ> -p <PWR>`
+./tuner_valon.py -f <FREQ_MHZ> -p <PWR>`
 ```
 Frequency is a required parameter, while power is optional. The default gain/attentuation 
 is 0.
