@@ -1,0 +1,20 @@
+[project]
+name = "valon_telem"
+version = "0.1.0"
+description = "Valon 5015/5019 socket-based telemetry and CLI interface"
+authors = [{ name="Alisa Yurevich", email="alisa.yurevich@tufts.edu" }]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.8"
+
+dependencies = [
+  "pyserial>=3.5"
+]
+
+[project.scripts]
+valon-cli = "valon_telem.cli:main"
+valon-telem-server = "valon_telem.server:main"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
