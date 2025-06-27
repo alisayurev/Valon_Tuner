@@ -10,7 +10,7 @@ echo "Installing Python package..."
 
 # assumes you're running from root where pyproject.toml lives
 pip install --upgrade pip setuptools wheel
-pip install -e "$WORKDIR"
+pip install "$WORKDIR"
 
 echo "Copying systemd service file..."
 sed "s|USER_PLACEHOLDER|$USER|g; s|WORKDIR_PLACEHOLDER|$WORKDIR|g" "$SERVICE_TEMPLATE" | sudo tee "$SERVICE_PATH" > /dev/null
