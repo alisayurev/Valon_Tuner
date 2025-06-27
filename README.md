@@ -36,8 +36,14 @@ journalctl -u valon_telem -f
 
 ### 5. Run the CLI
 The CLI connects to the Unix socket opened in this service in order to set
-parameters on the Valon. 
-
+parameters on the Valon. To run the CLI run the following in any directory:
+```bash
+valon-cli -f <FREQ_MHZ> -p <dB>
+```
+Frequency is a required argument, power is optional. The default power will be 0,
+no amplification/attenuation. Test this on your own setup to edit the output accordingly. 
+The range for -p is -50 to 20. In order to get more attenuation, another command needs to be added in valon_control. 
+See [Valon 5015/5019 documentation](https://www.valonrf.com/5015-customer-downloads.html) for more details.
 
 ## Alternate Installation (development/CLI use only)
 ```bash
