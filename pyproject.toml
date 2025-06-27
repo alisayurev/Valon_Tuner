@@ -3,7 +3,7 @@ name = "valon_telem"
 version = "0.1.0"
 description = "Valon 5015/5019 socket-based telemetry and CLI interface"
 authors = [{ name="Alisa Yurevich", email="alisa.yurevich@tufts.edu" }]
-license = { text = "MIT" }
+license = "MIT"
 readme = "README.md"
 requires-python = ">=3.8"
 
@@ -14,6 +14,9 @@ dependencies = [
 [project.scripts]
 valon-cli = "valon_telem.cli:main"
 valon-telem-server = "valon_telem.server:main"
+
+[tool.setuptools]
+packages = ["valon_tel"]
 
 [build-system]
 requires = ["setuptools"]

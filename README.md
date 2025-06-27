@@ -11,7 +11,7 @@ This service continously polls the valon + exposes telemetry via Unix socket.
 
 ### 2. Clone this repo
 ```bash
-git clone -b https://github.com/alisayurev/Valon_Tuner.git
+git clone --single-branch --branch jetson-service https://github.com/alisayurev/Valon_Tuner.git
 cd Valon_Tuner
 ```
 
