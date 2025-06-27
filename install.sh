@@ -10,14 +10,14 @@ echo "Installing Python package..."
 
 OFFLINE=0 #assumes online
 
-if[[$"1" == "--offline"]]; then
-    OFFLINE = 1
+if [[ $"1" == "--offline" ]]; then
+    OFFLINE=1
     echo "offline install"
 else 
     echo "online install"
 fi
 
-if[[$OFFLINE -eq 0]]; then
+if [[ $OFFLINE -eq 0 ]]; then
     # assumes you're running from root where pyproject.toml lives
     # this part assumes internet access
     pip install --upgrade pip setuptools wheel
