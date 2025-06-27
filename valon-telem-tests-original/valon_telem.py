@@ -101,7 +101,13 @@ class Valon_Sock:
         try:
             self.logger.info(f"connecting to Valon on {self.valon_port}")
             # i dont think im creatinf this object correctly yet. well becayse the cli has a port alr. specifiied but lowk it may be ok
-            self.valon = ValonSynthTelemetry(port=self.valon_port)
+            try:
+                self.valon = ValonSynthTelemetry(port=self.valon_port)
+            except Exception as e:
+                self.logger.error(f"failed to connect to valon")
+
+            # TO DO: more robust way to handle the valon being plugged in
+            # rn, the valon must be plugged in before boot. should probably be in one of the threads 
 
             #each socket will be seperate 
             self.telem_server_socket = self.setup_socket(socket_path=self.telem_socket_path,backlog=10,description="Telemetry")

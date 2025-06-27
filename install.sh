@@ -1,13 +1,14 @@
 #!/bin/bash
 set -e
 
-SERVICE_NAME="valon-telem"
+SERVICE_NAME="valon_telem"
 SERVICE_TEMPLATE="systemd/valon_telem.service.template"
+SERVICE_PATH="/etc/systemd/system/${SERVICE_NAME}.service"
 USER=$(whoami)                        
 WORKDIR="$(pwd)"   
 echo "Installing Python package..."
 
-# assumes you're running from your repo root where pyproject.toml lives
+# assumes you're running from root where pyproject.toml lives
 pip install --upgrade pip setuptools wheel
 pip install -e "$WORKDIR"
 

@@ -13,7 +13,6 @@ class ValonSynthTelemetry(ValonSynth):
     """
     Extension of Valon CLI that will poll the tuner for info + return telemetry
     """
-
     # TO DO: test calling readfreq and read power. need to know the querying works
     def read_freq(self):
         try:
@@ -48,14 +47,13 @@ class Valon_Sock:
         self.cli_socket_path = cli_socket_path
         self.poll_interval = poll_interval
         self.valon_port = valon_port
-        self.running = False                    #status of the service
-        self.valon = None                       #will hold a valon obj
+        self.running = False                        #status of the service
+        self.valon = None                           #will hold a valon obj
         self.telem_server_socket = None  
-        self.cli_server_socket = None             #will hold the socket once its opened + initialized
-        self.last_telem = {}                    #last telem dictionary
+        self.cli_server_socket = None               #will hold the socket once its opened + initialized
+        self.last_telem = {}                        #last telem dictionary
         self.telem_lock = threading.Lock()
 
-        #since we are threading lets set up a log :3
         logging.basicConfig(
             level=logging.INFO,
             format='%(asctime)s - %(levelname)s - %(message)s'
@@ -71,7 +69,6 @@ class Valon_Sock:
     def _sig_handler(self,signum,frame):
         self.logger.info(f"recieved {signum}")
         self.stop()
-        pass
 
     def start(self):
         """start telem server thread"""
@@ -82,23 +79,25 @@ class Valon_Sock:
         try:
             self.logger.info(f"connecting to Valon on {self.valon_port}")
             # i dont think im creatinf this object correctly yet. well becayse the cli has a port alr. specifiied but lowk it may be ok
+            # also -> basiaclly upon start of the servers, the valon needs to be plugged in
+
+            # also i think the service will fail if this fails -> which is not ideal probably 
             self.valon = ValonSynthTelemetry(port=self.valon_port)
 
-            threads =[]
-
-            #each socket will be seperate 
+            #set up the client and telem sockets
             self.telem_server_socket = self.setup_socket(socket_path=self.telem_socket_path,backlog=10,description="Telemetry")
             self.cli_server_socket = self.setup_socket(socket_path=self.cli_socket_path,backlog=2,description="CLI")
 
             #thread to poll the valon in the background
+            #thread for the socket for bens service to connect to get telem
             threading.Thread(target=self.telem_loop, daemon=True).start()
             threading.Thread(target=self.telem_server_loop, daemon=True).start()
 
-            #main thread is the cli
+            #main thread is the cli -> user running to configure the valon 
             self.cli_server_loop()
 
         except Exception as e:
-            self.logger.error(f"Error starting server: {e}")
+            self.logger.error(f"error starting servers: {e}")
             self.stop()
             raise
 
@@ -179,7 +178,6 @@ class Valon_Sock:
             except Exception as e:
                 if self.running:
                     self.logger.error(f"error in telemetry server loop: {e}")
-
 
     def handle_service_client(self, client_socket):
         try:
