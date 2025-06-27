@@ -1,7 +1,4 @@
-import socket       # instead of this cli doing the direct connection, the connection will be done through a socket
-                    # the service will connect to the port
-                    # this also means that this script will probably need to be added on the machines python path.
-                    # 
+import socket      
 import json 
 
 CLI_SOCKET_PATH = "/tmp/valon_cli.sock"

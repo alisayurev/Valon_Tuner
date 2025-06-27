@@ -20,7 +20,6 @@ import socket       # instead of this cli doing the direct connection, the conne
 import json 
 
 CLI_SOCKET_PATH = "/tmp/valon_cli.sock"
-#--- NO LONGER TOUCHES THE SERIAL PORT. is instead just a user interface ot the service) --#
 
 def send_command_socket(cmd):
     try:

@@ -6,6 +6,7 @@ After=multi-user.target
 Type=simple
 ExecStart=/usr/bin/env valon-telem-server
 Restart=on-failure
+RestartSec=5
 User=USER_PLACEHOLDER
 WorkingDirectory=WORKDIR_PLACEHOLDER
 StandardOutput=journal
