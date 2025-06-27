@@ -4,19 +4,21 @@ This service continously polls the valon + exposes telemetry via Unix socket.
 
 ## Installation for Service on Jetson
 
-### 1. Requirements:
+### Requirements:
 - Python 3.8+
 - systemd linux distribution
 - Valon 5015/5019 connected to linux machine
 - pip3
 
-### 2. Clone this repo
+## ONLINE Install
+
+### 1. Clone this repo
 ```bash
 git clone --single-branch --branch jetson-service https://github.com/alisayurev/Valon_Tuner.git
 cd Valon_Tuner
 ```
 
-### 3. Run the Installer (ONLINE)
+### 2. Run the Installer
 As of now, the service requires the valon to be plugged in on boot. 
 ```bash
 chmod +x install.sh
@@ -25,21 +27,28 @@ chmod +x install.sh
 This will install the package (`pip install`), generate the
 valon_telem.service systemd unit, enable and start the service. NOTE: You need internet on your 
 machine to be able to do this, as it runs `pip install --upgrade pip setuptools wheel`.
-If you do not have internet: [see Offline Install](#35-run-the-installer-offline). If your machine already has Pyserial in a
-python environment, you can edit the pyproject.toml to remove this dependency and continue with regular install.
+If you do not have internet: [see Offline Install](#35-run-the-installer-offline).
 
-### 3.5 Run the Installer (OFFLINE)
-In order to install this offline, an online companion machine must [clone this repo](#2-clone-this-repo), and 
-`cd` into Valon_Tuner. Then download the packages:
+## OFFLINE Install 
+
+### 1. Clone this repo
+On an online companion machine, clone the repo:
 ```bash
-pip download --dest wheels
+git clone --single-branch --branch jetson-service https://github.com/alisayurev/Valon_Tuner.git
+cd Valon_Tuner
 ```
-Copy `/wheels' directory onto the offline machine, and run:
+
+### 2. Run the Installer
+Then download the packages and put them into a directory within Valon_Tuner:
+```bash
+pip download --dest wheels .
+```
+Copy the cloned repo (with /wheels within it) onto the offline machine:
 ```bash
 ./install --offline
 ```
 
-### 4. Monitor service
+### 3. Monitor service
 ```bash
 sudo systemctl status valon_telem
 ```
@@ -48,7 +57,7 @@ See live logs:
 journalctl -u valon_telem -f
 ```
 
-### 5. Run the CLI
+### 4. Run the CLI
 The CLI connects to the Unix socket opened in this service in order to set
 parameters on the Valon. To run the CLI run the following in any directory:
 ```bash
