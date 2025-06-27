@@ -16,14 +16,26 @@ git clone --single-branch --branch jetson-service https://github.com/alisayurev/
 cd Valon_Tuner
 ```
 
-### 3. Run the installer
+### 3. Run the Installer (ONLINE)
 As of now, the service requires the valon to be plugged in on boot. 
 ```bash
 chmod +x install.sh
 ./install.sh
 ```
-This will install the package in editable mode (`pip install -e`), generate the
-valon_telem.service systemd unit, enable and start the service. 
+This will install the package (`pip install`), generate the
+valon_telem.service systemd unit, enable and start the service. NOTE: You need internet on your 
+machine to be able to do this, as it runs `pip install --upgrade pip setuptools wheel`.
+If you do not have internet: see []. If your machine already has Pyserial in a
+python environment, you can edit the pyproject.toml to remove this dependency and continue with regular install.
+
+### 3.5 Run the Installer (OFFLINE)
+In order to install this offline, an online companion machine must download the repo, and 
+`cd Valon_Tuner`. Then download the packages:
+`pip download --dest wheels`
+Copy `/wheels' directory onto the offline machine, and run:
+```bash
+./install --offline
+```
 
 ### 4. Monitor service
 ```bash
@@ -52,3 +64,6 @@ pip install git+https://github.com/alisayurev/Valon_Tuner.git@jetson-service
 This will clone the repo and build the python package valon_telem. This doesnt start up the systemd service. 
 
 
+
+
+WARNING: rettrying after connection broken by newconnection error )'pip.vedor" name or srvice not know /simple/pip

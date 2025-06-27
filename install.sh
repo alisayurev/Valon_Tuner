@@ -8,9 +8,24 @@ USER=$(whoami)
 WORKDIR="$(pwd)"   
 echo "Installing Python package..."
 
-# assumes you're running from root where pyproject.toml lives
-pip install --upgrade pip setuptools wheel
-pip install "$WORKDIR"
+OFFLINE=0 #assumes online
+
+if[[$"1" == "--offline"]]; then
+    OFFLINE = 1
+    echo "offline install"
+else 
+    echo "online install"
+fi
+
+if[[$OFFLINE -eq 0]]; then
+    # assumes you're running from root where pyproject.toml lives
+    # this part assumes internet access
+    pip install --upgrade pip setuptools wheel
+    pip install "$WORKDIR"
+else
+    pip install --no-index --find-links=wheels "$WORKDIR"
+
+fi
 
 echo "Copying systemd service file..."
 sed "s|USER_PLACEHOLDER|$USER|g; s|WORKDIR_PLACEHOLDER|$WORKDIR|g" "$SERVICE_TEMPLATE" | sudo tee "$SERVICE_PATH" > /dev/null
