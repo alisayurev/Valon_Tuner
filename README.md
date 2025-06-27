@@ -2,7 +2,8 @@
 This repo contains a systemd managed telemetry service and CLI interface for the Valon 5015 RF Synthesizer.
 This service continously polls the valon + exposes telemetry via Unix socket.
 
-## Installation
+## Installation for Service on Jetson
+
 ### 1. Requirements:
 - Python 3.8+
 - systemd linux distribution
@@ -36,5 +37,12 @@ journalctl -u valon_telem -f
 ### 5. Run the CLI
 The CLI connects to the Unix socket opened in this service in order to set
 parameters on the Valon. 
+
+
+## Alternate Installation (development/CLI use only)
+```bash
+pip install git+https://github.com/alisayurev/Valon_Tuner.git@jetson-service
+```
+This will clone the repo and build the python package valon_telem. This doesnt start up the systemd service. 
 
 
