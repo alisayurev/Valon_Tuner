@@ -12,8 +12,8 @@ dependencies = [
 ]
 
 [project.scripts]
-valon-cli = "valon_telem.cli:main"
-valon-telem-server = "valon_telem.server:main"
+valon-cli = "valon_tel.cli:main"
+valon-telem-server = "valon_tel.server:main"
 
 [tool.setuptools]
 packages = ["valon_tel"]
