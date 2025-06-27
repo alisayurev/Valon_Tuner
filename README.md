@@ -25,13 +25,15 @@ chmod +x install.sh
 This will install the package (`pip install`), generate the
 valon_telem.service systemd unit, enable and start the service. NOTE: You need internet on your 
 machine to be able to do this, as it runs `pip install --upgrade pip setuptools wheel`.
-If you do not have internet: see []. If your machine already has Pyserial in a
+If you do not have internet: [see Offline Install](#35-run-the-installer-offline). If your machine already has Pyserial in a
 python environment, you can edit the pyproject.toml to remove this dependency and continue with regular install.
 
 ### 3.5 Run the Installer (OFFLINE)
-In order to install this offline, an online companion machine must download the repo, and 
-`cd Valon_Tuner`. Then download the packages:
-`pip download --dest wheels`
+In order to install this offline, an online companion machine must [clone this repo](#2-clone-this-repo), and 
+`cd` into Valon_Tuner. Then download the packages:
+```bash
+pip download --dest wheels
+```
 Copy `/wheels' directory onto the offline machine, and run:
 ```bash
 ./install --offline
@@ -62,8 +64,3 @@ See [Valon 5015/5019 documentation](https://www.valonrf.com/5015-customer-downlo
 pip install git+https://github.com/alisayurev/Valon_Tuner.git@jetson-service
 ```
 This will clone the repo and build the python package valon_telem. This doesnt start up the systemd service. 
-
-
-
-
-WARNING: rettrying after connection broken by newconnection error )'pip.vedor" name or srvice not know /simple/pip
