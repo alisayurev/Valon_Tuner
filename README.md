@@ -6,7 +6,7 @@ This service continously polls the valon + exposes telemetry via Unix socket.
 
 ### Requirements:
 - Python 3.8+
-- systemd linux distribution
+- Jetpack 6.2 Linux distro
 - Valon 5015/5019 connected to linux machine
 - pip3
 
@@ -73,3 +73,13 @@ See [Valon 5015/5019 documentation](https://www.valonrf.com/5015-customer-downlo
 pip install git+https://github.com/alisayurev/Valon_Tuner.git@jetson-service
 ```
 This will clone the repo and build the python package valon_telem. This doesnt start up the systemd service. 
+
+to remove: 
+
+rm -rf Valon_Tuner
+pip uninstall valon_telem
+
+sudo systemctl stop valon_telem
+sudo systemctl disable valon_telem
+sudo rm /etc/systemd/system/valon_telem.service
+sudo systemctl daemon-reload
