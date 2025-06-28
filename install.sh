@@ -10,11 +10,6 @@ echo "Installing Python package..."
 
 OFFLINE=0 #assumes online
 
-if [[ $EUID -ne 0 ]]; then
-    echo "This script must be run as root. Use sudo:"
-    echo "  sudo $0"
-    exit 1
-fi
 
 if [[ "$1" == "--offline" ]]; then
     OFFLINE=1
@@ -34,10 +29,7 @@ else
 fi
 
 echo "Copying systemd service file..."
-if ! sed "s|USER_PLACEHOLDER|$USER|g; s|WORKDIR_PLACEHOLDER|$WORKDIR|g" "$SERVICE_TEMPLATE" | tee "$SERVICE_PATH" > /dev/null; then
-    echo "Error: Failed to write service file to $SERVICE_PATH"
-    exit 1
-fi
+sed "s|USER_PLACEHOLDER|$USER|g; s|WORKDIR_PLACEHOLDER|$WORKDIR|g" "$SERVICE_TEMPLATE" | sudo tee "$SERVICE_PATH" > /dev/null
 
 echo "Reloading systemd daemon..."
 sudo systemctl daemon-reload
