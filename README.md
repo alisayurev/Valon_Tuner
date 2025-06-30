@@ -1,6 +1,10 @@
 # Valon Tuner Jetson Service
-This repo contains a systemd managed telemetry service and CLI interface for the Valon 5015 RF Synthesizer.
-This service continously polls the valon + exposes telemetry via Unix socket.
+This repo contains a systemd-managed telemetry service and CLI for the Valon 5015 RF Synthesizer designed 
+for NVIDIA Jetson platforms. This service continously polls the valon to expose real-time telemetry via Unix domain socket.
+
+There are two unix domain sockets opened by this service:
+- Telemetry socket expecting another systemd service. Provides real-time frequency and power telemetry data for external clients or monitoring services.
+- CLI command socket: Expects control commands from the [CLI](#4-run-the-cli)
 
 ## Installation for Service on Jetson
 
@@ -10,9 +14,8 @@ This service continously polls the valon + exposes telemetry via Unix socket.
 - Valon 5015/5019 connected to linux machine
 - pip3
 
-Prior to beginning, create a symlink to the Valon port. This allows immediate connection
-upon boot.
-Create a udev file,
+### Setup: Create a persistent symlink for the Valon device
+Create a udev file:
 ```bash
 sudo nano /etc/udev/rules.d/99-valon.rules
 ```
@@ -42,7 +45,7 @@ chmod +x install.sh
 This will install the package (`pip install`), generate the
 valon_telem.service systemd unit, enable and start the service. NOTE: You need internet on your 
 machine to be able to do this, as it runs `pip install --upgrade pip setuptools wheel`.
-If you do not have internet: [see Offline Install](#35-run-the-installer-offline).
+If you do not have internet: [see Offline Install](#offline-install).
 
 ## OFFLINE Install 
 
