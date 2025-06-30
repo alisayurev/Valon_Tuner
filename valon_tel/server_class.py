@@ -13,7 +13,7 @@ class ValonSynthTelemetry(ValonSynth):
     """
     Extension of Valon CLI that will poll the tuner for info + return telemetry
     """
-    # TO DO: test calling readfreq and read power. need to know the querying works
+
     def read_freq(self):
         try:
             response = self.send("F?")
@@ -41,14 +41,13 @@ class Valon_Sock:
     """
     Server that polls Valon for telemetry and serves data via Unix socket
     """
-    #ask ben about the poll interval
     def __init__(self, telem_socket_path="/tmp/valon_telem.sock", cli_socket_path = "/tmp/valon_cli.sock", poll_interval=0.1,valon_port="/dev/valon5015"):
         self.telem_socket_path = telem_socket_path          
         self.cli_socket_path = cli_socket_path
         self.poll_interval = poll_interval
         self.valon_port = valon_port
         self.running = False                        #status of the service
-        self.valon = None                           #will hold a valon obj
+        self.valon = None                         
         self.telem_server_socket = None  
         self.cli_server_socket = None               #will hold the socket once its opened + initialized
         self.last_telem = {}                        #last telem dictionary
@@ -62,7 +61,6 @@ class Valon_Sock:
         self.logger = logging.getLogger(__name__)
 
     def setup_signal_handler(self):
-        #signal module will basically call the handler if it recieves these
         signal.signal(signal.SIGTERM, self._sig_handler)
         signal.signal(signal.SIGINT, self._sig_handler)
 
@@ -71,7 +69,9 @@ class Valon_Sock:
         self.stop()
 
     def start(self):
-        """start telem server thread"""
+        """
+        Connect to the Valon, set up the CLI + telem sockets, start the polling + telem threads
+        """
 
         self.running = True
         self.setup_signal_handler()
@@ -124,7 +124,6 @@ class Valon_Sock:
         if os.path.exists(socket_path):
             os.unlink(socket_path)
 
-        #get directory conatining the socket file
         socket_dir = Path(socket_path).parent
         socket_dir.mkdir(parents=True, exist_ok=True)
 
@@ -143,7 +142,9 @@ class Valon_Sock:
             raise
 
     def telem_loop(self):
-        """valon polling"""
+        """
+        Valon polling
+        """
         self.logger.info(f"starting polling valon")
 
         while self.running:
@@ -157,7 +158,6 @@ class Valon_Sock:
             except Exception as e:
                 self.logger.error(f"error polling telemetry: {e}")
 
-                # save latest
                 with self.telem_lock:
                     self.last_telem = {
                         "timestamp": time.time(),
@@ -168,7 +168,9 @@ class Valon_Sock:
             time.sleep(self.poll_interval)
 
     def telem_server_loop(self):
-        """handling telem request from bens service"""
+        """
+        Handle telem request from telemetry service
+        """
         self.logger.info(f"starting thread to distribute valon telemetry")
 
         while self.running:
@@ -185,6 +187,9 @@ class Valon_Sock:
                     self.logger.error(f"error in telemetry server loop: {e}")
 
     def handle_service_client(self, client_socket):
+        """
+        Helper for telem_server_loop
+        """
         try:
             with client_socket:
                 with self.telem_lock:
@@ -198,7 +203,9 @@ class Valon_Sock:
             self.logger.error(f"error handling telemetry client: {e}")
 
     def cli_server_loop(self):
-        """handle cli socket client"""
+        """
+        Handle incoming CLI commands
+        """
         self.logger.info(f"starting thread to distribute valon telemetry")
 
         while self.running:
@@ -215,6 +222,9 @@ class Valon_Sock:
                     self.logger.error(f"error in cli server loop: {e}")
 
     def handle_cli_client(self, client_socket):
+        """
+        Helper for cli_server_loop
+        """
         try:
             with client_socket:
                 data = client_socket.recv(1024).decode('utf-8').strip()
@@ -237,6 +247,7 @@ class Valon_Sock:
             val = cmd.removeprefix("PWR").strip()
             return self.valon.set_power(cmd)
         
+    # this is solely for the MEP telem service -> required structure
     @staticmethod
     def format_telem(freq, pwr): #optionally add timestamp
         return ["TUNER", str(freq), str(pwr)]
