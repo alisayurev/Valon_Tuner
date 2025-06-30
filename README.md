@@ -3,7 +3,7 @@ This repo contains a systemd-managed telemetry service and CLI for the Valon 501
 for NVIDIA Jetson platforms. This service continously polls the valon to expose real-time telemetry via Unix domain socket.
 
 There are two unix domain sockets opened by this service:
-- Telemetry socket expecting another systemd service. Provides real-time frequency and power telemetry data for external clients or monitoring services (currently as a JSON string: ["TUNER", "<freq>", "<power>"]. A timestamp is also available (epoch)) 
+- Telemetry socket expecting another systemd service. Provides real-time frequency and power telemetry data for external clients or monitoring services (currently as a JSON string: ["TUNER", "freq", "power"]. A timestamp is also available (epoch)) 
 - CLI command socket: Expects control commands from the [CLI](#4-run-the-cli)
 
 ## Installation for Service on Jetson
