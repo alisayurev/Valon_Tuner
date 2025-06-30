@@ -79,13 +79,13 @@ class Valon_Sock:
         try:
             self.logger.info(f"connecting to Valon on {self.valon_port}")
 
-            try:
-                self.valon = ValonSynthTelemetry(port=self.valon_port)
-            except Exception as e:
-                self.logger.error(f"failed to connect to valon")
-
-            # TO DO: more robust way to handle the valon being plugged in
-            # rn, the valon must be plugged in before boot. should probably be in one of the threads 
+            while self.running:
+                try:
+                    self.valon = ValonSynthTelemetry(port=self.valon_port)
+                    break
+                except Exception as e:
+                    self.logger.error(f"failed to connect to valon, trying again")
+                    time.sleep(5)
 
             #set up the client and telem sockets
             self.telem_server_socket = self.setup_socket(socket_path=self.telem_socket_path,backlog=10,description="Telemetry")
@@ -118,7 +118,7 @@ class Valon_Sock:
             if os.path.exists(path):
                 os.unlink(path)
 
-        # TO DO: thread.join() for 2 non main threads 
+        # TO DO: thread.join() for 2 non main threads
 
     def setup_socket(self, socket_path, backlog=5, description=""):
         if os.path.exists(socket_path):
