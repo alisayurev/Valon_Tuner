@@ -190,7 +190,8 @@ class Valon_Sock:
                 with self.telem_lock:
                     telem_data = self.last_telem.copy()
 
-                    response = json.dumps(telem_data) + "\n"
+                    formatted = self.format_telem(telem_data.get("frequency",""), telem_data.get("power",""))
+                    response = json.dumps(formatted) + "\n"
                     client_socket.sendall(response.encode('utf-8'))
 
         except Exception as e:
@@ -235,3 +236,9 @@ class Valon_Sock:
         elif cmd.startswith("PWR"):
             val = cmd.removeprefix("PWR").strip()
             return self.valon.set_power(cmd)
+        
+    @staticmethod
+    def format_telem(freq, pwr): #optionally add timestamp
+        return ["TUNER", str(freq), str(pwr)]
+                  
+
