@@ -10,6 +10,22 @@ This service continously polls the valon + exposes telemetry via Unix socket.
 - Valon 5015/5019 connected to linux machine
 - pip3
 
+Prior to beginning, create a symlink to the Valon port. This allows immediate connection
+upon boot.
+Create a udev file,
+```bash
+sudo nano /etc/udev/rules.d/99-valon.rules
+```
+Add the following:
+```bash
+SUBSYSTEM=="tty", ATTRS{idProduct}=="6001", ATTRS{idVendor}=="0403", SYMLINK+="valon5015"
+```
+Reload and apply udev rules:
+```bash
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+```
+
 ## ONLINE Install
 
 ### 1. Clone this repo
@@ -19,7 +35,6 @@ cd Valon_Tuner
 ```
 
 ### 2. Run the Installer
-As of now, the service requires the valon to be plugged in on boot. 
 ```bash
 chmod +x install.sh
 ./install.sh
@@ -88,4 +103,3 @@ sudo systemctl disable valon_telem
 sudo rm /etc/systemd/system/valon_telem.service
 sudo systemctl daemon-reload
 ```
-
