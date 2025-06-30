@@ -230,6 +230,8 @@ class Valon_Sock:
 
     def execute_cli_command(self, cmd):
         if cmd.startswith("F"):
-            return self.valon.set_freq(cmd)
+            val = cmd.removeprefix("F").removesuffix("MHz")
+            return self.valon.set_freq(val)
         elif cmd.startswith("PWR"):
+            val = cmd.removeprefix("PWR").strip()
             return self.valon.set_power(cmd)
