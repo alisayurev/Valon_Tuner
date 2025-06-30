@@ -90,12 +90,6 @@ no amplification/attenuation. Test this on your own setup to edit the output acc
 The range for -p is -50 to 20. In order to get more attenuation, another command needs to be added in valon_control. 
 See [Valon 5015/5019 documentation](https://www.valonrf.com/5015-customer-downloads.html) for more details.
 
-## Alternate Installation (development/CLI use only)
-```bash
-pip install git+https://github.com/alisayurev/Valon_Tuner.git@jetson-service
-```
-This will clone the repo and build the python package valon_telem. This doesnt start up the systemd service. 
-
 ### To remove: 
 
 ```bash
