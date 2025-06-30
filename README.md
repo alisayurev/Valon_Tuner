@@ -33,7 +33,7 @@ sudo udevadm trigger
 
 ### 1. Clone this repo
 ```bash
-git clone --single-branch --branch jetson-service https://github.com/alisayurev/Valon_Tuner.git
+git clone https://github.com/alisayurev/valon-jetson-service.git
 cd Valon_Tuner
 ```
 
@@ -52,7 +52,7 @@ If you do not have internet: [see Offline Install](#offline-install).
 ### 1. Clone this repo
 On an online companion machine, clone the repo:
 ```bash
-git clone --single-branch --branch jetson-service https://github.com/alisayurev/Valon_Tuner.git
+git clone https://github.com/alisayurev/valon-jetson-service.git
 cd Valon_Tuner
 ```
 
