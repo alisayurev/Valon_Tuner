@@ -7,9 +7,7 @@ SERVICE_PATH="/etc/systemd/system/${SERVICE_NAME}.service"
 USER=$(whoami)                        
 WORKDIR="$(pwd)"   
 echo "Installing Python package..."
-
 OFFLINE=0 #assumes online
-
 
 if [[ "$1" == "--offline" ]]; then
     OFFLINE=1
@@ -29,6 +27,8 @@ else
 fi
 
 echo "Copying systemd service file..."
+
+## worried thst dudo tee eill silently fail
 sed "s|USER_PLACEHOLDER|$USER|g; s|WORKDIR_PLACEHOLDER|$WORKDIR|g" "$SERVICE_TEMPLATE" | sudo tee "$SERVICE_PATH" > /dev/null
 
 echo "Reloading systemd daemon..."
