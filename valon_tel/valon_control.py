@@ -1,15 +1,5 @@
 #!/usr/bin/env python3
 
-"""
-
-Valon 5015/5019 RF Synthesizer CLI Tool
-
-Command-line interface for Valon RF synthesizer on Nvidia Jetson Linux systems.
-This tool configures the synthesizer via USB serial connection.
-
-Alisa Yurevich 06/2025 
-
-"""
 import serial  
 import time
 
