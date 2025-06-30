@@ -22,7 +22,7 @@ if [[ $OFFLINE -eq 0 ]]; then
     pip install --upgrade pip setuptools wheel
     pip install "$WORKDIR"
 else
-    pip install --no-index --find-links=wheels "$WORKDIR"
+   pip install --no-index --find-links=wheels valon_telem-*.whl
 
 fi
 
