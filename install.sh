@@ -16,19 +16,20 @@ else
     echo "online install"
 fi
 
+## TO DO: test online install on a MEP
 if [[ $OFFLINE -eq 0 ]]; then
     # assumes you're running from root where pyproject.toml lives
     # this part assumes internet access
     pip install --upgrade pip setuptools wheel
     pip install "$WORKDIR"
 else
-   pip install --no-index --find-links=wheels valon_telem-*.whl
+    WHEEL_FILE=$(ls wheels/valon_telem-*.whl | head -n 1)
+    echo "Installing: $WHEEL_FILE"
+    pip install --no-index --find-links=wheels "$WHEEL_FILE"
 
 fi
 
 echo "Copying systemd service file..."
-
-## worried thst dudo tee eill silently fail
 sed "s|USER_PLACEHOLDER|$USER|g; s|WORKDIR_PLACEHOLDER|$WORKDIR|g" "$SERVICE_TEMPLATE" | sudo tee "$SERVICE_PATH" > /dev/null
 
 echo "Reloading systemd daemon..."

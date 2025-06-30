@@ -39,9 +39,13 @@ cd Valon_Tuner
 ```
 
 ### 2. Run the Installer
-Then download the packages and put them into a directory within Valon_Tuner:
+On your online machine:
 ```bash
-pip download --dest wheels .
+pip install build
+python3 -m build 
+mkdir wheels 
+cp dist/*.whl wheels/
+pip download --dest wheels setuptools wheel
 ```
 Copy the cloned repo (with /wheels within it) onto the offline machine:
 ```bash
@@ -74,12 +78,14 @@ pip install git+https://github.com/alisayurev/Valon_Tuner.git@jetson-service
 ```
 This will clone the repo and build the python package valon_telem. This doesnt start up the systemd service. 
 
-to remove: 
+### To remove: 
 
-rm -rf Valon_Tuner
-pip uninstall valon_telem
-
-sudo systemctl stop valon_telem
+```bash
+rm -rf Valon_Tuner #remove the folder
+pip uninstall valon_telem #uninstall package
+sudo systemctl stop valon_telem #stop the service
 sudo systemctl disable valon_telem
 sudo rm /etc/systemd/system/valon_telem.service
 sudo systemctl daemon-reload
+```
+
