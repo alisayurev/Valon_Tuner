@@ -13,6 +13,7 @@ There are two unix domain sockets opened by this service:
 - Jetpack 6.2 Linux distro
 - Valon 5015/5019 connected to linux machine
 - pip3
+- the valon, for now, must be plugged in upon boot
 
 ### Setup: Create a persistent symlink for the Valon device
 Create a udev file:
