@@ -34,7 +34,7 @@ sudo udevadm trigger
 ### 1. Clone this repo
 ```bash
 git clone https://github.com/alisayurev/valon-jetson-service.git
-cd Valon_Tuner
+cd valon-jetson-service
 ```
 
 ### 2. Run the Installer
