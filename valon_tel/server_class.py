@@ -8,6 +8,9 @@ import threading
 import signal
 import os
 import json
+import sys
+
+#TO DO: handle runtime disconnects
 
 class ValonSynthTelemetry(ValonSynth):
     """
@@ -56,24 +59,30 @@ class Valon_Sock:
 
         logging.basicConfig(
             level=logging.INFO,
-            format='%(asctime)s - %(levelname)s - %(message)s'
+            format='%(asctime)s - %(levelname)s - %(message)s',
+            handlers=[
+                logging.StreamHandler(sys.stdout)
+            ]
         )
 
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger("valon_telem")
+
 
     def setup_signal_handler(self):
         signal.signal(signal.SIGTERM, self._sig_handler)
         signal.signal(signal.SIGINT, self._sig_handler)
+        signal.signal(signal.SIGHUP, self._sig_handler)
 
     def _sig_handler(self,signum,frame):
+        # TO DO: haandle sighup -> custom reload?
         self.logger.info(f"recieved {signum}")
         self.stop()
+        sys.exit(0)
 
     def start(self):
         """
         Connect to the Valon, set up the CLI + telem sockets, start the polling + telem threads
         """
-
         self.running = True
         self.setup_signal_handler()
 
@@ -92,7 +101,6 @@ class Valon_Sock:
             self.telem_server_socket = self.setup_socket(socket_path=self.telem_socket_path,backlog=10,description="Telemetry")
             self.cli_server_socket = self.setup_socket(socket_path=self.cli_socket_path,backlog=2,description="CLI")
 
-            #thread to poll the valon in the background
             #thread for the socket for bens service to connect to get telem
             threading.Thread(target=self.telem_loop, daemon=True).start()
             threading.Thread(target=self.telem_server_loop, daemon=True).start()
@@ -118,8 +126,6 @@ class Valon_Sock:
         for path in [self.telem_socket_path, self.cli_socket_path]:
             if os.path.exists(path):
                 os.unlink(path)
-
-        # TO DO: thread.join() for 2 non main threads
 
     def setup_socket(self, socket_path, backlog=5, description=""):
         if os.path.exists(socket_path):
