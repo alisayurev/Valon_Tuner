@@ -52,6 +52,7 @@ class Valon_Sock:
         self.cli_server_socket = None               #will hold the socket once its opened + initialized
         self.last_telem = {}                        #last telem dictionary
         self.telem_lock = threading.Lock()
+        self.valon_lock = threading.Lock()
 
         logging.basicConfig(
             level=logging.INFO,
@@ -149,11 +150,12 @@ class Valon_Sock:
 
         while self.running:
             try:
-                telem = self.valon.read_telem()
-                with self.telem_lock:
-                    self.last_telem = telem
+                with self.valon_lock:
+                    telem = self.valon.read_telem()
+                    with self.telem_lock:
+                        self.last_telem = telem
 
-                self.logger.info(f"updated telemetry: {telem}")
+                    self.logger.info(f"updated telemetry: {telem}")
                 
             except Exception as e:
                 self.logger.error(f"error polling telemetry: {e}")
@@ -240,12 +242,13 @@ class Valon_Sock:
             self.logger.error(f"error handling cli client: {e}")
 
     def execute_cli_command(self, cmd):
-        if cmd.startswith("F"):
-            val = cmd.removeprefix("F").removesuffix("MHz")
-            return self.valon.set_freq(val)
-        elif cmd.startswith("PWR"):
-            val = cmd.removeprefix("PWR").strip()
-            return self.valon.set_power(cmd)
+        with self.valon_lock:
+            if cmd.startswith("F"):
+                val = cmd.removeprefix("F").removesuffix("MHz").strip()
+                return self.valon.set_freq(val)
+            elif cmd.startswith("PWR"):
+                val = cmd.removeprefix("PWR").strip()
+                return self.valon.set_power(val)
         
     # this is solely for the MEP telem service -> required structure
     @staticmethod
