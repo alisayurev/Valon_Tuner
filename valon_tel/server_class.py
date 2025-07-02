@@ -1,5 +1,5 @@
 import time
-from valon_tel.valon_control import ValonSynth 
+from valon_control import ValonSynth 
 from pathlib import Path
 import socket
 import signal
